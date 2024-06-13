@@ -1,0 +1,14 @@
+.product:hover{
+    transform: scale(1.1);
+    transition: .6s;
+    transition-timing-function: ease-in-out;
+}
+.Registration{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    background-color: rgb(255, 255, 255) !important;
+}
+

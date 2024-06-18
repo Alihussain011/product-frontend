@@ -1,40 +1,34 @@
 import { useState,useEffect  } from 'react';
 import { Button, Stack, Modal, Form, Container } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateProduct } from '../redux/action/action';
+import { useDispatch, useSelector} from 'react-redux';
+import { addProduct } from '../../redux/action/action';
 
-export default function UpdateForm({ updateForm,SetUpdateForm }: any) {
+export default function AddProductForm({ handleClose, show }: any) {
 
     const dispatch = useDispatch();
-    const products = useSelector((state:any) => (state.products));
 
-    const [title, setTitle] = useState("");
+    const products = useSelector((state:any) => state.products);
+    const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [imageUrl, setImageUrl] = useState('');
 
-    function update(e: any) {
+    function add(e: any) {
         e.preventDefault();
-        dispatch(updateProduct({id:updateForm,title,description,images:[imageUrl]}))
-        SetUpdateForm(-1);
+        const id = products[products.length-1].id+1;
+        dispatch(addProduct({id, title, description, "thumbnail": imageUrl }));
+        handleClose();
     }
-    
+
     useEffect(()=>{
-        let data = updateForm!==-1?products.filter((e:any)=>(e.id===updateForm))[0]:undefined;
-        
-        if(data){
-            setTitle(data.title);
-            setDescription(data.description);
-            setImageUrl(data.images);
-        }
-    },[updateForm])
+    },[]);
     return (<>
         <Container>
-            <Modal show={updateForm!=-1} onHide={()=>{  SetUpdateForm(-1)}}>
+            <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Add Products</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={update} >
+                    <Form onSubmit={add} >
                         <Form.Group className="mb-3" >
                             <Form.Label>Product Title</Form.Label>
                             <Form.Control type="text" placeholder="Product Title" onChange={(e) => (setTitle(e.target.value))} value={title} />
@@ -48,10 +42,10 @@ export default function UpdateForm({ updateForm,SetUpdateForm }: any) {
                             <Form.Control type='text' onChange={(e) => (setImageUrl(e.target.value))} value={imageUrl} />
                         </Form.Group>
                         <Stack direction='horizontal' className='gap-3'>
-                            <Button variant="success" type='submit' >
-                                Update
+                            <Button className='shadow' type='submit' >
+                                Add Product
                             </Button>
-                            <Button variant="secondary"    onClick={()=>{ SetUpdateForm(-1)  }}    >
+                            <Button className='shadow' variant="secondary" onClick={handleClose}>
                                 Close
                             </Button>
                         </Stack>

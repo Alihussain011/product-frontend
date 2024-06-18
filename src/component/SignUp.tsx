@@ -1,12 +1,9 @@
 import { Container, Form, Button } from 'react-bootstrap'
 import { useFormik } from 'formik'
-import { useNavigate } from 'react-router-dom';
-import { NavBar } from './NavBar';
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import Switch from './Switch';
+import { signUp } from '../api/auth';
 
 const SignUp = () => {
-    const navigate = useNavigate();
      interface SignUp {
         username:string;
         email : string;
@@ -46,21 +43,11 @@ const SignUp = () => {
     const formik = useFormik({
         initialValues : initialValues,
         // validate,
-        onSubmit : async (values)=>{
-            try{
-                let res = await axios.post("http://localhost:8000/app/registration",values);
-                Cookies.set("token",res.data);
-                navigate("/registration/login");
-  
-            }catch(error:any){
-                console.log(error.response)
-                alert(error.response.data)
-            }
-        }
+        onSubmit : signUp,
     });
     return (
         <Container  className='Registration rounded shadow p-5'>
-        <NavBar/>
+        <Switch/>
         <Container>
             <Form onSubmit={formik.handleSubmit}>
                 <Form.Label htmlFor='username'>UserName : </Form.Label>

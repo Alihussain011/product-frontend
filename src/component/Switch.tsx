@@ -1,6 +1,6 @@
 import { Navbar, Nav, Container, NavItem, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-export const NavBar = () => {
+const Switch = () => {
     return (
         <Navbar>
             <Container className='justify-content-center'>
@@ -21,3 +21,5 @@ export const NavBar = () => {
         </Navbar>
     )
 }
+
+export default Switch;

@@ -1,16 +1,12 @@
 import { Container, Form, Button} from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik'
-import { NavBar } from './NavBar';
-import axios from 'axios';
-import Cookies from 'js-cookie';
-
+import Switch from './Switch';
+import { login } from '../api/auth';
 const Login = () => {
-    const navigate = useNavigate();
-     interface Login {
-        username:string;
-        password:string;
-     } 
+    interface Login {
+    username:string;
+    password:string;
+    } 
     const initialValues  :Login = {
             username: "",
             password: "",
@@ -31,31 +27,18 @@ const Login = () => {
         if (!values.password) {
           errors.password = 'Required';
         } 
-    
-      
+
         return errors;
-      };
+    };
+
     const formik = useFormik({
         initialValues : initialValues,
         // validate,
-        onSubmit : async (values)=>{
-            
-            try{
-                let res = await axios.post("http://localhost:8000/app/login",values);
-                
-                console.log(res)
-                Cookies.set("token",res.data);
-                navigate("/");
-                
-            }catch(error:any){
-                console.log(error.response)
-                alert(error.response.data)
-            }
-        }
+        onSubmit : login,
     });
     return (
         <Container className='Registration rounded shadow p-5' >
-        <NavBar/>
+        <Switch/>
         <Container>
             <Form onSubmit={formik.handleSubmit} >
                 <Form.Label htmlFor='username'>UserName : </Form.Label>
